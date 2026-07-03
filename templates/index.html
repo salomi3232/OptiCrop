@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<section class="hero">
+  <h1>Smart Agricultural Production Optimization Engine</h1>
+  <p>Leverage AI and data-driven insights to maximize crop yields and resource efficiency.</p>
+  <div class="hero-buttons">
+    <a href="/recommend" class="btn btn-primary">🌱 Get Crop Recommendation</a>
+    <a href="/suitability" class="btn btn-secondary">🔍 Check Crop Suitability</a>
+    <a href="/research" class="btn btn-outline">📊 Research & Analytics</a>
+  </div>
+</section>
+
+<section class="features">
+  <div class="card">
+    <h3>🌾 Scenario 1 – Crop Recommendation</h3>
+    <p>Enter your soil and climate parameters (N, P, K, temperature, humidity, pH, rainfall) and get the best crop recommendation powered by Machine Learning.</p>
+    <a href="/recommend" class="btn btn-sm">Try Now →</a>
+  </div>
+  <div class="card">
+    <h3>🔬 Scenario 2 – Suitability Assessment</h3>
+    <p>Check whether your current environmental conditions are suitable for a specific crop and get a detailed compatibility score with actionable insights.</p>
+    <a href="/suitability" class="btn btn-sm">Try Now →</a>
+  </div>
+  <div class="card">
+    <h3>📈 Scenario 3 – Research & Policy</h3>
+    <p>Explore crop-environment relationships through interactive charts, statistical summaries, and data visualizations for evidence-based decision making.</p>
+    <a href="/research" class="btn btn-sm">Explore →</a>
+  </div>
+</section>
+
+<section class="stats-bar">
+  <div class="stat"><span>22</span><p>Crops Supported</p></div>
+  <div class="stat"><span>7</span><p>Environmental Factors</p></div>
+  <div class="stat"><span>ML</span><p>Powered by Random Forest</p></div>
+  <div class="stat"><span>3</span><p>Use Case Scenarios</p></div>
+</section>
+{% endblock %}
