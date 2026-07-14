@@ -1,10 +1,38 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for, flash
 import numpy as np
 import pandas as pd
 import joblib
 import os
+import hashlib
+import json
 
 app = Flask(__name__)
+app.secret_key = 'opticrop_secret_2024'
+
+# ── Simple file-based user store ───────────────────────────────────────────────
+USERS_FILE = 'users.json'
+
+def load_users():
+    if not os.path.exists(USERS_FILE):
+        return {}
+    with open(USERS_FILE) as f:
+        return json.load(f)
+
+def save_users(users):
+    with open(USERS_FILE, 'w') as f:
+        json.dump(users, f)
+
+def hash_password(pwd):
+    return hashlib.sha256(pwd.encode()).hexdigest()
+
+def login_required(f):
+    from functools import wraps
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'username' not in session:
+            return redirect(url_for('login'))
+        return f(*args, **kwargs)
+    return decorated
 
 # ── Load artefacts ─────────────────────────────────────────────────────────────
 MODEL_DIR = 'model'
@@ -79,14 +107,66 @@ def suitability_score(crop_name, X_raw):
     return round(np.mean(scores), 1), issues
 
 
+# ── Auth Routes ───────────────────────────────────────────────────────────────
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if 'username' in session:
+        return redirect(url_for('index'))
+    error = None
+    if request.method == 'POST':
+        users = load_users()
+        uname = request.form['username'].strip()
+        pwd   = hash_password(request.form['password'])
+        if uname in users and users[uname]['password'] == pwd:
+            session['username'] = uname
+            session['fullname'] = users[uname]['fullname']
+            return redirect(url_for('index'))
+        error = 'Invalid username or password.'
+    return render_template('login.html', error=error)
+
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if 'username' in session:
+        return redirect(url_for('index'))
+    error = None
+    success = None
+    if request.method == 'POST':
+        users    = load_users()
+        uname    = request.form['username'].strip()
+        fullname = request.form['fullname'].strip()
+        pwd      = request.form['password']
+        cpwd     = request.form['confirm_password']
+        if uname in users:
+            error = 'Username already exists. Please choose another.'
+        elif len(pwd) < 6:
+            error = 'Password must be at least 6 characters.'
+        elif pwd != cpwd:
+            error = 'Passwords do not match.'
+        else:
+            users[uname] = {'fullname': fullname, 'password': hash_password(pwd)}
+            save_users(users)
+            success = 'Account created! You can now login.'
+    return render_template('register.html', error=error, success=success)
+
+
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+
 # ── Routes ─────────────────────────────────────────────────────────────────────
 
 @app.route('/')
+@login_required
 def index():
     return render_template('index.html')
 
 
 @app.route('/recommend', methods=['GET', 'POST'])
+@login_required
 def recommend():
     result = None
     if request.method == 'POST':
@@ -105,6 +185,7 @@ def recommend():
 
 
 @app.route('/suitability', methods=['GET', 'POST'])
+@login_required
 def suitability():
     result = None
     crops  = sorted(le.classes_)
@@ -124,6 +205,7 @@ def suitability():
 
 
 @app.route('/research')
+@login_required
 def research():
     df = pd.read_csv('Crop_recommendation.csv')
     stats = df.groupby('label')[FEATURES].mean().round(2).reset_index()

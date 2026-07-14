@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="auth-wrapper">
+  <div class="auth-card">
+    <div class="auth-logo">🌾</div>
+    <h2>Welcome Back</h2>
+    <p class="subtitle">Sign in to your OptiCrop account</p>
+
+    {% if error %}
+    <div class="alert alert-error">{{ error }}</div>
+    {% endif %}
+
+    <form method="POST" action="/login">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter your username" required autofocus/>
+      </div>
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-wrap">
+          <input type="password" name="password" id="loginPwd" placeholder="Enter your password" required/>
+          <span class="eye-toggle" onclick="togglePwd('loginPwd', this)">👁</span>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary full-width" style="margin-top:1rem;">Login</button>
+    </form>
+
+    <p class="auth-switch">Don't have an account? <a href="/register">Register here</a></p>
+  </div>
+</div>
+{% endblock %}

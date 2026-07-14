@@ -20,3 +20,10 @@ document.querySelectorAll('form').forEach(form => {
     if (btn) { btn.textContent = '⏳ Analyzing...'; btn.disabled = true; }
   });
 });
+
+// Toggle password visibility
+function togglePwd(id, el) {
+  const input = document.getElementById(id);
+  if (input.type === 'password') { input.type = 'text';  el.textContent = '🙈'; }
+  else                           { input.type = 'password'; el.textContent = '👁'; }
+}

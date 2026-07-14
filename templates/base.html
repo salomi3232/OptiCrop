@@ -10,10 +10,17 @@
 <nav class="navbar">
   <div class="brand">🌾 OptiCrop</div>
   <ul>
+    {% if session.username %}
     <li><a href="/">Home</a></li>
     <li><a href="/recommend">Crop Recommendation</a></li>
     <li><a href="/suitability">Suitability Check</a></li>
     <li><a href="/research">Research & Analytics</a></li>
+    <li class="nav-user">👤 {{ session.fullname }}</li>
+    <li><a href="/logout" class="nav-logout">Logout</a></li>
+    {% else %}
+    <li><a href="/login">Login</a></li>
+    <li><a href="/register">Register</a></li>
+    {% endif %}
   </ul>
 </nav>
 <main class="container">

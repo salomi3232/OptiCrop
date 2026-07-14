@@ -127,3 +127,44 @@ h2 { font-size: 1.7rem; color: #1b5e20; margin-bottom: .3rem; }
 
 /* ── Footer ───────────────────────────────────────────────────────────────── */
 footer { text-align: center; padding: 1.2rem; background: #1b5e20; color: rgba(255,255,255,.7); font-size: .85rem; margin-top: 3rem; }
+
+/* ── Auth Pages (Login / Register) ───────────────────────────────────────── */
+.auth-wrapper {
+  min-height: calc(100vh - 120px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem 1rem;
+}
+.auth-card {
+  background: #fff; border-radius: 14px; padding: 2.5rem 2rem;
+  box-shadow: 0 4px 24px rgba(0,0,0,.10); width: 100%; max-width: 420px;
+  text-align: center;
+}
+.auth-logo { font-size: 3rem; margin-bottom: .5rem; }
+.auth-card h2 { color: #1b5e20; margin-bottom: .2rem; }
+.auth-card .subtitle { margin-bottom: 1.6rem; }
+.auth-card .form-group { text-align: left; margin-bottom: 1rem; }
+.auth-switch { margin-top: 1.4rem; font-size: .9rem; color: #555; }
+.auth-switch a { color: #2e7d32; font-weight: 600; }
+.auth-switch a:hover { text-decoration: underline; }
+
+/* Password show/hide */
+.password-wrap { position: relative; }
+.password-wrap input { width: 100%; padding-right: 2.4rem; }
+.eye-toggle {
+  position: absolute; right: .7rem; top: 50%; transform: translateY(-50%);
+  cursor: pointer; font-size: 1rem; user-select: none; opacity: .6;
+}
+.eye-toggle:hover { opacity: 1; }
+
+/* Alerts */
+.alert { padding: .75rem 1rem; border-radius: 6px; margin-bottom: 1rem; font-size: .9rem; text-align: left; }
+.alert-error   { background: #ffebee; color: #c62828; border-left: 4px solid #c62828; }
+.alert-success { background: #e8f5e9; color: #2e7d32; border-left: 4px solid #2e7d32; }
+
+/* Navbar user info & logout */
+.nav-user { font-size: .88rem; color: #a5d6a7; display: flex; align-items: center; }
+.nav-logout {
+  background: rgba(255,255,255,.15); border-radius: 4px;
+  padding: .3rem .7rem; font-size: .88rem; transition: background .2s;
+}
+.nav-logout:hover { background: #c62828 !important; }
